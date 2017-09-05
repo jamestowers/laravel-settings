@@ -1,6 +1,6 @@
 # Lumen Settings
 
-#This is a fork of anlutro/laravel-settings to make it work with Lumen
+# This is a fork of anlutro/laravel-settings to make it work with Lumen
 
 [![Build Status](https://travis-ci.org/anlutro/laravel-settings.png?branch=master)](https://travis-ci.org/anlutro/laravel-settings)
 [![Latest Stable Version](https://poser.pugx.org/anlutro/l4-settings/v/stable.svg)](https://github.com/anlutro/laravel-settings/releases)
@@ -16,10 +16,18 @@ Despite the package name, this package works with Lumen 5.x!
 
 ## Installation
 
-1. `composer require anlutro/l4-settings`
-2. Add `anlutro\LaravelSettings\ServiceProvider` to the array of providers in `config/app.php`.
-3. Publish the config file by running `php artisan config:publish anlutro/l4-settings` (Laravel 4.x) or `php artisan vendor:publish` (Laravel 5.x). The config file will give you control over which storage engine to use as well as some storage-specific settings.
-4. Optional: add `'Setting' => 'anlutro\LaravelSettings\Facade'` to the array of aliases in `config/app.php`.
+1. Add `"anlutro/l4-settings": "dev-master"` to your composer file
+2. Reference this VCS in the repositories section:
+```
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/jamestowers/lumen-settings"
+        }
+    ],
+```
+2. Add `$app->register('anlutro\LaravelSettings\ServiceProvider');` to `bootstrap/app.php`.
+3. Copy `` from to ``
 
 ## Usage
 
