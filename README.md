@@ -1,12 +1,14 @@
-# Laravel Settings
+# Lumen Settings
+
+#This is a fork of anlutro/laravel-settings to make it work with Lumen
 
 [![Build Status](https://travis-ci.org/anlutro/laravel-settings.png?branch=master)](https://travis-ci.org/anlutro/laravel-settings)
 [![Latest Stable Version](https://poser.pugx.org/anlutro/l4-settings/v/stable.svg)](https://github.com/anlutro/laravel-settings/releases)
 [![License](https://poser.pugx.org/anlutro/l4-settings/license.svg)](http://opensource.org/licenses/MIT)
 
-Persistent, application-wide settings for Laravel.
+Persistent, application-wide settings for Lumen.
 
-Despite the package name, this package works with Laravel 5.x!
+Despite the package name, this package works with Lumen 5.x!
 
 ## Common problems
 
