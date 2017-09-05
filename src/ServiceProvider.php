@@ -9,8 +9,6 @@
 
 namespace anlutro\LaravelSettings;
 
-use Illuminate\Foundation\Application;
-
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
 	/**
@@ -25,17 +23,14 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	 */
 	public function register()
 	{
-		$method = version_compare(Application::VERSION, '5.2', '>=') ? 'singleton' : 'bindShared';
 
 		// Bind the manager as a singleton on the container.
-		$this->app->$method('anlutro\LaravelSettings\SettingsManager', function($app) {
+		$this->app->singleton('anlutro\LaravelSettings\SettingsManager', function($app) {
 			// When the class has been resolved once, make sure that settings
 			// are saved when the application shuts down.
-			if (version_compare(Application::VERSION, '5.0', '<')) {
-				$app->shutdown(function($app) {
-					$app->make('anlutro\LaravelSettings\SettingStore')->save();
-				});
-			}
+			$app->shutdown(function($app) {
+				$app->make('anlutro\LaravelSettings\SettingStore')->save();
+			});
 			
 			/**
 			 * Construct the actual manager.
@@ -48,9 +43,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 			return $app->make('anlutro\LaravelSettings\SettingsManager')->driver();
 		});
 
-		if (version_compare(Application::VERSION, '5.0', '>=')) {
-			$this->mergeConfigFrom(__DIR__ . '/config/config.php', 'settings');
-		}
+		$this->mergeConfigFrom(__DIR__ . '/config/config.php', 'settings');
+		
 	}
 
 	/**
@@ -58,18 +52,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 	 */
 	public function boot()
 	{
-		if (version_compare(Application::VERSION, '5.0', '>=')) {
-			$this->publishes([
-				__DIR__.'/config/config.php' => config_path('settings.php')
-			], 'config');
-			$this->publishes([
-				__DIR__.'/migrations' => database_path('migrations')
-			], 'migrations');
-		} else {
-			$this->app['config']->package(
-				'anlutro/l4-settings', __DIR__ . '/config', 'anlutro/l4-settings'
-			);
-		}
+		// 
 	}
 
 	/**
