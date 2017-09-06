@@ -22,23 +22,6 @@ Persistent, application-wide settings for Lumen.
 4. Copy `lumen-settings/src/config/config.php` from to `/config/settings.php`
 5. Make sure `$app->withFacades();` is uncommented and add `$app->configure('settings');` in `bootstrap/app.php`
 
-## Usage
-
-You can either access the setting store via its facade or inject it by type-hinting towards the abstract class `anlutro\LaravelSettings\SettingStore`.
-
-```php
-<?php
-Setting::set('foo', 'bar');
-Setting::get('foo', 'default value');
-Setting::get('nested.element');
-Setting::forget('foo');
-$settings = Setting::all();
-?>
-```
-
-Call `Setting::save()` explicitly to save changes made.
-
-
 ### Auto-saving
 
 Unlike the Laravel package, this fork doesnt auto-save, mainly because i'm too lazy to try.
