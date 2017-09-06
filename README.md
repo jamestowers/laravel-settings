@@ -1,18 +1,10 @@
 # Lumen Settings
 
-# This is a fork of anlutro/laravel-settings to make it work with Lumen
+## This is a fork of anlutro/laravel-settings to make it work with Lumen
 
-[![Build Status](https://travis-ci.org/anlutro/laravel-settings.png?branch=master)](https://travis-ci.org/anlutro/laravel-settings)
-[![Latest Stable Version](https://poser.pugx.org/anlutro/l4-settings/v/stable.svg)](https://github.com/anlutro/laravel-settings/releases)
-[![License](https://poser.pugx.org/anlutro/l4-settings/license.svg)](http://opensource.org/licenses/MIT)
+See https://github.com/anlutro/laravel-settings for more info on the original package
 
 Persistent, application-wide settings for Lumen.
-
-Despite the package name, this package works with Lumen 5.x!
-
-## Common problems
-
-- Class not found errors: https://github.com/anlutro/laravel-settings/issues/38
 
 ## Installation
 
@@ -26,8 +18,9 @@ Despite the package name, this package works with Lumen 5.x!
         }
     ],
 ```
-2. Add `$app->register('anlutro\LaravelSettings\ServiceProvider');` to `bootstrap/app.php`.
-3. Copy `` from to ``
+3. Add `$app->register('anlutro\LaravelSettings\ServiceProvider');` to `bootstrap/app.php`.
+4. Copy `lumen-settings/src/config/config.php` from to `/config/settings.php`
+5. Make sure `$app->withFacades();` is uncommented and add `$app->configure('settings');` in `bootstrap/app.php`
 
 ## Usage
 
@@ -48,64 +41,12 @@ Call `Setting::save()` explicitly to save changes made.
 
 ### Auto-saving
 
-In Laravel 4.x, the library makes sure to auto-save every time the application shuts down if anything has been changed.
-
-In Laravel 5.x, if you add the middleware `anlutro\LaravelSettings\SaveMiddleware` to your `middleware` list in `app\Http\Kernel.php`, settings will be saved automatically at the end of all HTTP requests, but you'll still need to call `Setting::save()` explicitly in console commands, queue workers etc.
-
-
-### JSON storage
-
-You can modify the path used on run-time using `Setting::setPath($path)`.
+Unlike the Laravel package, this fork doesnt auto-save, mainly because i'm too lazy to try.
+You will need to do `Setting::save();` after setting a setting with `Setting::set('foo', 'bar');`
 
 
-### Database storage
-
-#### Using Migration File
-
-If you use the database store you need to run `php artisan migrate --package=anlutro/l4-settings` (Laravel 4.x) or `php artisan migrate --path=vendor/anlutro/l4-settings/src/migrations` (Laravel 5.x) to generate the table.
-
-#### Example
-
-For example, if you want to store settings for multiple users/clients in the same database you can do so by specifying extra columns:
-
-```php
-<?php
-Setting::setExtraColumns(array(
-	'user_id' => Auth::user()->id
-));
-?>
-```
-
-`where user_id = x` will now be added to the database query when settings are retrieved, and when new settings are saved, the `user_id` will be populated.
-
-If you need more fine-tuned control over which data gets queried, you can use the `setConstraint` method which takes a closure with two arguments:
-
-- `$query` is the query builder instance
-- `$insert` is a boolean telling you whether the query is an insert or not. If it is an insert, you usually don't need to do anything to `$query`.
-
-```php
-<?php
-Setting::setConstraint(function($query, $insert) {
-	if ($insert) return;
-	$query->where(/* ... */);
-});
-?>
-```
-
-### Custom stores
-
-This package uses the Laravel `Manager` class under the hood, so it's easy to add your own custom session store driver if you want to store in some other way. All you need to do is extend the abstract `SettingStore` class, implement the abstract methods and call `Setting::extend`.
-
-```php
-<?php
-class MyStore extends anlutro\LaravelSettings\SettingStore {
-	// ...
-}
-Setting::extend('mystore', function($app) {
-	return $app->make('MyStore');
-});
-?>
-```
+## More info
+For more info see the original package: https://github.com/anlutro/laravel-settings
 
 
 ## Contact
