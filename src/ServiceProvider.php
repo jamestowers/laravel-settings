@@ -26,12 +26,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
 		// Bind the manager as a singleton on the container.
 		$this->app->singleton('anlutro\LaravelSettings\SettingsManager', function($app) {
-			// When the class has been resolved once, make sure that settings
-			// are saved when the application shuts down.
-			$app->shutdown(function($app) {
-				$app->make('anlutro\LaravelSettings\SettingStore')->save();
-			});
-			
 			/**
 			 * Construct the actual manager.
 			 */
